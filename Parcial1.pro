@@ -4,4 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Registro.cpp \
         main.cpp
+
+HEADERS += \
+    Registro.h

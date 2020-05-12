@@ -1,0 +1,4 @@
+#ifndef CODIFICACION_H
+#define CODIFICACION_H
+
+#endif // CODIFICACION_H
