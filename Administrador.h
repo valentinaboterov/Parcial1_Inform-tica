@@ -1,0 +1,4 @@
+#ifndef ADMINISTRADOR_H
+#define ADMINISTRADOR_H
+
+#endif // ADMINISTRADOR_H
