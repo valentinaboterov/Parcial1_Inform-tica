@@ -38,7 +38,7 @@ int Registro::MenuAdmin(){
     cout<<"1. Ingresar pelicula a cartelera."<<endl;
     cout<<"2. Ingresar pelicula para estreno."<<endl;
     cout<<"3. Revisar reportes del dia."<<endl;
-    cout<<"4. Actualizar disponibilidad. "<<endl;
+    cout<<"4.Elmininar película de cartelera."<<endl;
     cout<<"5. Salir"<<endl;
     cout<<"Ingrese la opcion deseada: ";
     cin>>opcion; cout<<endl;
@@ -101,13 +101,6 @@ void Registro::RegistroUsuario(string id,string nombre,string clave){
     cout<<"Registro exitoso!"<<endl;
 }
 
-//Mostrar menú Usuario.
-int  Registro::MenuUsuario(){
-    cout<<endl;
-    int opcion=0;
-    cout<<"   Bienvenido "<<nombreusuario<<"!"<<endl;
-    //IMPRIMIR OPCIONES DISPONIBLES CUADRO 1 DE LA GUÍA
-};
 
 //Buscar separadores
 string Registro::Buscar(string linea,int romper){

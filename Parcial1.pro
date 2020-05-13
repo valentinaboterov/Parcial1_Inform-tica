@@ -7,6 +7,7 @@ SOURCES += \
         Administrador.cpp \
         Codificacion.cpp \
         Registro.cpp \
+        Usuario.cpp \
         main.cpp
 
 HEADERS += \

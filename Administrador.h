@@ -9,7 +9,6 @@
 using namespace std;
 class Administrador{
   public:
-    map<char,int> precios;
     map<int,map<string,vector<int>>> inicializacion();
     char filas[5]={'A','B','C','D','E'};
     void imprimirSala(int sala);
@@ -19,6 +18,9 @@ class Administrador{
     void MostrarReporte();
     void MostrarPrecios();
     void estrenos();
+    void EliminarP(string nombre);
+    void EliminiarE(string nombre);
+    int PreciosPelicula(int sala);  //Recibe la sala en la que se da la pelicula.
     //Buscar componentes en archivos.
     string BuscarPelicula(string linea,int romper);
     string Buscar(string linea,int romper);

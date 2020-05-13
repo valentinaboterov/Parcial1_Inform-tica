@@ -1,4 +1,5 @@
 #include<Administrador.h>
+#include<Usuario.h>
 #include<map>
 #include<vector>
 #include<string>
@@ -6,6 +7,7 @@
 #include <bits/stdc++.h>
 
 Administrador admin;
+Usuario usu;
 //Inicializa disponibilidad de salas según archivo
 map<int,map<string,vector<int>>> Administrador::inicializacion(){
      map<int,map<string,vector<int>>> salas;
@@ -58,7 +60,23 @@ map<int,map<string,vector<int>>> Administrador::inicializacion(){
     }archivo.close();
     return salas;
 };
-
+int PreciosPelicula(int sala){
+    int precio=0;
+    char linea[400];
+    int compara=0;
+    string valor="";
+    ifstream archivo;
+    archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Salas.txt");
+    while(!archivo.eof()){
+        archivo.getline(linea,sizeof (linea));
+        compara=stoi(admin.BuscarDisponible(linea,1));
+        if(compara==sala){
+            valor=admin.BuscarDisponible(linea,2);
+            precio=stoi(valor);
+        }
+    }
+    return precio;
+};
 
 //Imprmir Cartelera.
 void Administrador::imprimirCartelera(){
@@ -179,6 +197,36 @@ void Administrador::Agregarpelicula(){
     salida.close();
     admin.imprimirCartelera();
 };
+//Eliminiar pelicula o estreno
+void Administrador::EliminarP(string nombre){
+  ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
+  ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
+  char linea[400];
+  string compara="";
+  while(!archivo.eof()){
+      archivo.getline(linea,sizeof(linea));
+      compara=admin.BuscarPelicula(linea,2);
+      if(compara!=nombre){         //No pasa la linea de la pelicula que se quiere eliminar.
+          final<<linea<<endl;
+      }
+  }archivo.close();final.close();
+  usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
+};
+void Administrador::EliminiarE(string nombre){
+    ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
+    ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
+    char linea[400];
+    string compara="";
+    while(!archivo.eof()){
+        archivo.getline(linea,sizeof(linea));
+        compara=admin.BuscarPelicula(linea,2);
+        if(compara!=nombre){         //No pasa la linea de la pelicula que se quiere eliminar.
+            final<<linea<<endl;
+        }
+    }archivo.close();final.close();
+    usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
+};
+
 //Reporte diario
 void Administrador::Reportediario(int dia,string datos){
     ofstream salida("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt");

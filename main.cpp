@@ -10,9 +10,6 @@ int main()
     string clave="";
     Registro registro;
     Administrador admin;
-    admin.inicializacion();
-    admin.imprimirSala(5);
-    /*
     //Iniciar sesión como usuario.
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;
     while(opcion!=3){
@@ -28,16 +25,19 @@ int main()
             cin>>clave;cout<<endl;
             if(registro.Administrador(clave)==true){        //Clave correcta
                 opcion=registro.MenuAdmin();
-                while(opcion!=5){           //IMPLEMENTAR OPCIONES COMO ADMINISTRADOR.
-
+                while(opcion!=5){
+                       if(opcion==1){   //Agregar pelicula.
+                           admin.Agregarpelicula();
+                       }if(opcion==2){ //Agregar estreno.
+                           admin.estrenos();
+                       }
                 }
             }else{
                 cout<<"Clave incorrecta"<<endl;
             }
         }
         if(opcion==2){  //Ingresar como usuario.
-            registro.MenuUsuario();
+
         }
     }
-    */
 }
