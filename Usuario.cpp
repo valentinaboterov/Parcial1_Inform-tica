@@ -12,26 +12,24 @@ Usuario usu;
 using namespace std;
 
 //Mostrar menú Usuario.
-int Usuario::MenuUsuario(){
+void Usuario::Bienvenido(){
     cout<<endl;
     string nombre;
     nombre=regis.nombreusuario;
-    int opcion=0;
-    cout<<"   Bienvenido "<<nombre<<"!"<<endl;
-    cin>>opcion;
+    cout<<"   Bienvenid@ "<<nombre<<"!"<<endl;
 };
 //Actualizar cartelera
-void Usuario::Actualizarcartelera(string nombre){
+void Usuario::Actualizarcartelera(int sala){
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Pelicula.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
     int dis=0,pos=0;
-    string cambio="",compara="",sala="",genero="",tiempo="",hora="",disponible="",años="",edad="",linea1="";
+    string cambio="",compara="",nombre="",genero="",tiempo="",hora="",disponible="",años="",edad="",linea1="";
     char linea[400];
     while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
-        compara=admin.BuscarPelicula(linea,2);  //Retorna el normbre de pelicula en la linea
-        if(compara==nombre){        //Es la pelicula a actualizar.
-            sala=admin.BuscarPelicula(linea,1);genero=admin.BuscarPelicula(linea,3);tiempo=admin.BuscarPelicula(linea,4);
+        compara=admin.BuscarPelicula(linea,1);  //Retorna el normbre de pelicula en la linea
+        if(stoi(compara)==sala){        //Es la pelicula a actualizar.
+            nombre=admin.BuscarPelicula(linea,2);genero=admin.BuscarPelicula(linea,3);tiempo=admin.BuscarPelicula(linea,4);
             hora=admin.BuscarPelicula(linea,5);disponible=admin.BuscarPelicula(linea,6);edad=admin.BuscarPelicula(linea,7);
             while(disponible[pos+1]!='-'){
                 cambio+=disponible[pos];
@@ -39,7 +37,7 @@ void Usuario::Actualizarcartelera(string nombre){
             }
             dis=stoi(cambio)-1;
             disponible=to_string(dis)+"-70";
-            linea1=sala+"/"+compara+"/"+genero+"/"+tiempo+"/"+hora+"/"+disponible+"/"+edad;
+            linea1=sala+"/"+nombre+"/"+genero+"/"+tiempo+"/"+hora+"/"+disponible+"/"+edad;
             final<<linea1<<endl;
         }else{
             final<<linea<<endl;

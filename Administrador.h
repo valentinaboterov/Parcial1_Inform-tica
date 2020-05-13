@@ -17,9 +17,10 @@ class Administrador{
     void Reportediario(int dia,string datos);   //Recibe el día y los datos de la venta(Usuario,sala,pelicula y costo).
     void MostrarReporte();
     void MostrarPrecios();
-    void estrenos();
+    void Agregarestrenos();
+    void imprimirestreno();
     void EliminarP(string nombre);
-    void EliminiarE(string nombre);
+    void EliminarE(string nombre);
     int PreciosPelicula(int sala);  //Recibe la sala en la que se da la pelicula.
     //Buscar componentes en archivos.
     string BuscarPelicula(string linea,int romper);

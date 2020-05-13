@@ -37,9 +37,10 @@ int Registro::MenuAdmin(){
     cout<<"------------------------------Administrador------------------------------"<<endl;
     cout<<"1. Ingresar pelicula a cartelera."<<endl;
     cout<<"2. Ingresar pelicula para estreno."<<endl;
-    cout<<"3. Revisar reportes del dia."<<endl;
-    cout<<"4.Elmininar película de cartelera."<<endl;
-    cout<<"5. Salir"<<endl;
+    cout<<"3. Ver reporte."<<endl;
+    cout<<"4. Elmininar película de cartelera."<<endl;
+    cout<<"5. Eliminar estreno."<<endl;
+    cout<<"6.Salir."<<endl;
     cout<<"Ingrese la opcion deseada: ";
     cin>>opcion; cout<<endl;
     return opcion;

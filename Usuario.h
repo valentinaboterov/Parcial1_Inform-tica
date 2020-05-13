@@ -10,9 +10,9 @@
 using namespace std;
 class Usuario{
   public:
-    int  MenuUsuario();
+    void Bienvenido();
     void Actualizardisponibilidad(int sala,char fila,int asiento); //Actualiza disponibilidad de asientos.
-    void Actualizarcartelera(string nombre);
+    void Actualizarcartelera(int sala);
     void Pago(int cantida,int pago);     //Retorna la devuelta según pago
     void llenararchivo(string origi,string temp);
 };

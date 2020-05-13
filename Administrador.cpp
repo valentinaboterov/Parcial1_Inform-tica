@@ -100,7 +100,27 @@ void Administrador::imprimirCartelera(){
        cout<<"|-------------------------------------------------------------------------------------------------------------------"<<endl;
     }peliculas.close();
 }
-
+//Imprimir estrenos
+void Administrador::imprimirestreno(){
+    cout<<endl<<endl<<endl;
+    char linea[400];
+    string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="";
+    ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
+    cout<<"                                PROXIMOS ESTRENOS                                                 "<<endl;
+    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  Edad |"<<"    Nombre"<<endl;
+    cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
+    while(!peliculas.eof()){
+       peliculas.getline(linea,sizeof(linea));
+       sala=admin.BuscarPelicula(linea,1);
+       nombre=admin.BuscarPelicula(linea,2);
+       genero=admin.BuscarPelicula(linea,3);
+       tiempo=admin.BuscarPelicula(linea,4);
+       disponible=admin.BuscarPelicula(linea,5);
+       edad=admin.BuscarPelicula(linea,6);
+       cout<<"|"<<sala<<"    "<<genero <<"  "<<tiempo<<"  "<<disponible<<"  "<<edad<<"   "<< nombre<<endl;
+       cout<<"|-------------------------------------------------------------------------------------------------------------------"<<endl;
+    }peliculas.close();
+};
 //Imprimir sala.
 void Administrador::imprimirSala(int sala){
     map<int,map<string,vector<int>>> salas;
@@ -156,7 +176,7 @@ void Administrador::MostrarPrecios(){
 };
 
 //Agregar y ver proximos estreno
-void Administrador::estrenos(){
+void Administrador::Agregarestrenos(){
     //Definición de variables.
     string nombre="",genero="",edad="",sala="",tiempo="";
     ofstream archivo;       //Archivo de salida
@@ -212,7 +232,7 @@ void Administrador::EliminarP(string nombre){
   }archivo.close();final.close();
   usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
 };
-void Administrador::EliminiarE(string nombre){
+void Administrador::EliminarE(string nombre){
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
     char linea[400];
