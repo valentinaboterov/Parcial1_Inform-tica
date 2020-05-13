@@ -10,8 +10,8 @@ int main()
     string clave="";
     Registro registro;
     Administrador admin;
-    admin.imprimirCartelera();
-    admin.MostrarPrecios();
+    admin.inicializacion();
+    admin.imprimirSala(1);
     /*
     //Iniciar sesión como usuario.
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;

@@ -7,35 +7,55 @@
 
 Administrador admin;
 //Inicializa disponibilidad de salas según archivo
-void Administrador::inicializacion(){
-    char linea[400],salaux;
-    string sala="",disponible="",fila="",str="",salaaux="";
+map<int,map<string,vector<int>>> Administrador::inicializacion(){
+     map<int,map<string,vector<int>>> salas;
+    char linea[400],filaux;
+    string sala="",disponible="",fila="",str="",filaaux="";
     ifstream archivo;
-    int auxi=0;
+    int pos=0;
     vector<int> aux1;   //Filas
     map<string,vector<int>> aux;    //Fila y ocupados
     archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Disponibilidad.txt");
     if(!archivo.is_open()){
         cout<<"Error al abrir archivo."<<endl;
         exit(1);
+    }
+    for(int i=0;i<5;i++){       //Inicializa mapa global
+        for(int k=0;k<5;k++){
+            filaux=admin.filas[k];
+            for(int j=0;j<14;j++){      //Inicializa mapa en cero.
+                aux1.push_back(0);          //Todos están desocupados(0).
+            }filaaux=filaux; aux[filaaux]=aux1;
+            salas[i+1]=aux;    //Actualiza mapa global.
+            aux1.clear();
+       }
     }while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
         sala=admin.BuscarDisponible(linea,1);
         disponible=admin.BuscarDisponible(linea,2);
-        for(int i=0;i<5;i++){       //Busca cada sala y reserva las sillas ocupadas
-            salaux=admin.filas[i];
-            for(int j=0;j<disponible.length();i++){
-                if(disponible[i]==salaux){      //Busca cada fila en cada sala.
-                    int pos=i;
-                    while(disponible[i+1]!=','){
-                        str+=disponible[pos+1];
-                        pos+=1;
-                    }
-                    aux1[stoi(str)]=1;  //Si vale 1 está ocupada.
-                }
-                salaaux=salaux;
-            }aux[salaaux]=aux1;     //Guarda el vector respectivo de la fila.
-        }admin.salas[stoi(sala)]=aux; //Actualiza en mapa global
+            for(int i=0;i<5;i++){       //Busca cada sala y reserva las sillas ocupadas
+                filaux=admin.filas[i];
+                if(disponible.length()>1){         //Tiene sillas ocupadas.
+                    aux=salas[stoi(sala)];          //Obtiene mapa de cada sala para actualizar.
+                    aux1=aux[filaaux];
+                    for(int j=0;j<disponible.length();j++){     //Hay sillas reservadas.
+                        if(disponible[j]==filaux){      //Se analiza cada fila.
+                            pos=j;
+                            while(disponible[pos+1]!=','){      //Silla reservada en la fila que se analiza
+                                str+=disponible[pos+1];
+                                pos+=1;
+                            }if(stoi(str)>13){
+                                cout<<"Solo existen 14 sillas."<<endl;
+                            }else{aux1[stoi(str)-1]=1;}  //Si vale 1 está ocupada.
+                            str="";
+                            filaaux=filaux;     //Conviertea string.
+                         }
+                    }aux[filaaux]=aux1;     //Guarda el vector respectivo de la fila.
+                    aux1.clear();
+                    salas[stoi(sala)]=aux; //Actualiza en mapa global
+                 }
+            }archivo.close();
+        return salas;
     }
 };
 
@@ -65,41 +85,44 @@ void Administrador::imprimirCartelera(){
 
 //Imprimir sala.
 void Administrador::imprimirSala(int sala){
+    map<int,map<string,vector<int>>> salas;
     map<string,vector<int>> filas;
     vector<int> sillas;
     string fila;
-    filas=admin.salas[sala];
-    cout<<"---- Sala: "<<sala<<"----"<<endl;
-    cout<<" 1 2 3 4  5 6 7 8 9 10  11 12 13 14"<<endl;;
+    salas=admin.inicializacion();
+    filas=salas[sala];
+    cout<<"---------------Sala "<<sala<<"------------------"<<endl;
+    cout<<"  1 2 3 4   5 6 7 8 9 10   11 12 13 14|"<<endl;;
     for(int i=0;i<5;i++){
         fila=admin.filas[i];
         sillas=filas[fila];
         cout<<fila<<"| ";
-        for(int j=0;j<17;j++){
-            if(j==4 || j==11){  //Corredores.
+        for(int j=0;j<14;j++){
+            if(j==4 || j==10){  //Corredores.
                 cout<<" ";
-            }if(j>9){
+            }if(j>8){
                 if(sillas[j]==0){      //Silla disponible.
                     cout<<" - ";
                 }else{
-                    cout<<" x ";
+                    cout<<" + ";
                 }
             }else{
                 if(sillas[j]==0){      //Silla disponible.
                     cout<<"- ";
                 }else{
-                    cout<<"x ";
+                    cout<<"+ ";
                 }
             }
 
-        }cout<<endl;
+        }cout<<"|"<<endl;
     }
+    cout<<"---------------------------------------"<<endl;
 };
 
 
 //Mostrar preciso según sala.
 void Administrador::MostrarPrecios(){
-    cout<<endl; cout<<endl;
+    cout<<endl; cout<<endl;     //Imprime tabla de precios segun asiento.
         cout<<"   Tarifas segun tipo de  asientos   "<<endl;
         cout<<"  | Sala |  Clasificacion | Costo |"<<endl;
         cout<<"   ------ --------------- -------"<<endl;
@@ -113,6 +136,26 @@ void Administrador::MostrarPrecios(){
         cout<<"   ------ --------------- -------"<<endl;
         cout<<"  |  5   | Vibro Sound 3D |11900  |"<<endl;
 };
+
+//Agregar y ver proximos estreno
+void Administrador::estrenos(){
+    //Definición de variables.
+    string nombre="",genero="",edad="",sala="",tiempo="";
+    ofstream archivo;       //Archivo de salida
+    archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");     //Abre el archivo.
+    if(!archivo.is_open()){     //Verifica si logró abrir el archivo.
+        cout<<"Error al abrir archivo"<<endl;
+        exit(1);
+    }       //Pide datos del estreno.
+    cout<<"Ingrese el nombre de la pelicula: "; cin>>nombre; cout<<endl;
+    cout<<"Ingrese la sala en la que se va a proyectar: "; cin>>sala; cout<<endl;
+    cout<<"Ingrese el genero: "; cin>>genero; cout<<endl;
+    cout<<"Ingrese la fecha de estreno:(Dia-mes-año-hora) "; cin>>tiempo; cout<<endl;
+    cout<<"Ingrese la edad minima: "; cin>>edad; cout<<endl;
+    archivo<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<"/"<<"70-70"<<"/"<<edad<<"+"<<endl;       //Se agregan a la base de datos.
+    archivo.close();        //Cierr el archivo.
+};
+
 //Agregar película
 void Administrador::Agregarpelicula(){
     cout<<"Ingrese el numero de la sala en la que se proyectará la película, teniendo en cuenta que:"<<endl;
@@ -134,6 +177,7 @@ void Administrador::Agregarpelicula(){
     }
     salida<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<" mi"<<"/"<<hora<<"/"<<dispo<<"-70/"<<edad<<"+"<<endl;
     salida.close();
+    admin.imprimirCartelera();
 };
 //Reporte diario
 void Administrador::Reportediario(int dia,string datos){
@@ -236,7 +280,7 @@ string Administrador::BuscarDisponible(string linea, int romper){
                 cant=0;
             }
         }
-    }s2=linea.substr(pos,cant-1);
+    }s2=linea.substr(pos,cant);
     if(romper==1){return s1;}
     if(romper>1){return s2;}
 };
