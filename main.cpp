@@ -1,12 +1,18 @@
 #include <iostream>
 #include<Registro.h>
+#include<Administrador.h>
 
 using namespace std;
 
 int main()
 {
-    int opcion=0,clave=0;
+    int opcion=0;
+    string clave="";
     Registro registro;
+    Administrador admin;
+    admin.imprimirCartelera();
+    admin.MostrarPrecios();
+    /*
     //Iniciar sesión como usuario.
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;
     while(opcion!=3){
@@ -26,11 +32,12 @@ int main()
 
                 }
             }else{
-                cout<<"Clave incorrecta. Recuerde que la clave es de 8 dígitos numéricos."<<endl;
+                cout<<"Clave incorrecta"<<endl;
             }
         }
         if(opcion==2){  //Ingresar como usuario.
             registro.MenuUsuario();
         }
     }
+    */
 }

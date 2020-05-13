@@ -6,11 +6,14 @@
 using namespace std;
 class Registro{
 public:
-    bool Administrador(int clave);
+    bool Administrador(string clave);
     int  MenuAdmin();
-    void Usuario(string nombre);
+    bool Usuario(string id,string clave);
+    void RegistroUsuario(string id,string nombre,string clave);
     int  MenuUsuario();
 private:
     string nombreusuario;
+    void RegistroUsuario();
+    string Buscar(string linea,int romper); //Recibe linea de archivo y busca los separadores de datos..
 };
 #endif // REGISTRO_H
