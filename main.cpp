@@ -11,7 +11,7 @@ int main()
     Registro registro;
     Administrador admin;
     admin.inicializacion();
-    admin.imprimirSala(1);
+    admin.imprimirSala(5);
     /*
     //Iniciar sesión como usuario.
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;

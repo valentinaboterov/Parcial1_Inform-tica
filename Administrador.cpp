@@ -53,10 +53,10 @@ map<int,map<string,vector<int>>> Administrador::inicializacion(){
                     }aux[filaaux]=aux1;     //Guarda el vector respectivo de la fila.
                     aux1.clear();
                     salas[stoi(sala)]=aux; //Actualiza en mapa global
-                 }
-            }archivo.close();
-        return salas;
-    }
+                 }else{ i=5; }
+            }
+    }archivo.close();
+    return salas;
 };
 
 
@@ -92,14 +92,14 @@ void Administrador::imprimirSala(int sala){
     salas=admin.inicializacion();
     filas=salas[sala];
     cout<<"---------------Sala "<<sala<<"------------------"<<endl;
-    cout<<"  1 2 3 4   5 6 7 8 9 10   11 12 13 14|"<<endl;;
+    cout<<"   1 2 3 4   5 6 7 8 9  10   11 12 13 14|"<<endl;;
     for(int i=0;i<5;i++){
         fila=admin.filas[i];
         sillas=filas[fila];
         cout<<fila<<"| ";
         for(int j=0;j<14;j++){
             if(j==4 || j==10){  //Corredores.
-                cout<<" ";
+                cout<<"  ";
             }if(j>8){
                 if(sillas[j]==0){      //Silla disponible.
                     cout<<" - ";
