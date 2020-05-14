@@ -24,6 +24,7 @@ string codificacion::convbinario(char ascii){
     }
     return bin;
 }
+
 string codificacion::convascii(string binario){
     int lon=binario.length(),ascii=0,suma=0;
     int pos=lon-1;  //Recorrer string de atras para adelante.

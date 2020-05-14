@@ -1,8 +1,7 @@
 #include "Registro.h"
 #include<Codificacion.h>
 #include <iostream>
-#include <map>
-#include <string>
+#include<string>
 #include <vector>
 #include <sstream>
 #include <fstream>

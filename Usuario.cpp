@@ -1,10 +1,7 @@
 #include<Usuario.h>
 #include<Registro.h>
-#include<map>
-#include<vector>
 #include<string>
-#include<stdlib.h>
-#include <bits/stdc++.h>
+
 
 Registro regis;
 Administrador admini;
@@ -72,10 +69,14 @@ void Usuario::Actualizardisponibilidad(int sala,char fila,int asiento){
     usua.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Disponibilidad.txt");
 };
 //Pago asiento
-void Usuario::Pago(int cantidad,int pago){
+int Usuario::Pago(int cantidad,int pago){
     int devuelta=0;
-    devuelta=cantidad-pago;     //Resta la cantidad en billetes con la cantidad a pagar.
-    cout<<"Su devuelta es: "<<devuelta<<endl;
+    if(cantidad<pago){
+        cout<<"No es suficiente dinero."<<endl;
+        devuelta=-1;
+    }else{
+        devuelta=cantidad-pago;     //Resta la cantidad en billetes con la cantidad a pagar.
+    }return devuelta;
 };
 //Silla diponible
 bool Usuario::Silladisponible(int sala,char fila, int columna){

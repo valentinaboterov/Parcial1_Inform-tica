@@ -80,10 +80,12 @@ int main()
                                        cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
                                        cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
                                    }
+                                   cout<<endl<<"El total a pagar es: "<<preci<<endl;
                                    cout<<"Desea cancelar en efectivo o tarjeta? 1.Tajeta,2.Efectivo"<<endl;cin>>cont;
                                    if(cont==2){
                                         cout<<"Cantidad de dinero en billetes: "; cin>>billetes;
-                                        usuario.Pago(billetes,preci);
+                                        while(usuario.Pago(billetes,preci)==-1){cout<<"Cantidad de dinero en billetes: "; cin>>billetes;};
+                                        cout<<"Su devuelta es: "<<usuario.Pago(billetes,preci)<<endl;
                                    } usuario.Actualizarcartelera(sala);
                                    usuario.Actualizardisponibilidad(sala,fila,columna);
                                    cout<<"Desea hacer otra compra? 1.Si,0.No"<<endl; cin>>compra;

@@ -1,9 +1,5 @@
 #include<Administrador.h>
 #include<Usuario.h>
-#include<map>
-#include<vector>
-#include<string>
-#include<stdlib.h>
 
 
 Administrador admin;
@@ -217,7 +213,8 @@ void Administrador::Agregarpelicula(){
     cout<<"Ingrese la sala donde se proyectara la pelicula: ";cin>>sala; cout<<endl;
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
-    string cambio="",compara="",nombre,genero,tiempo,hora,disponible="70-70",edad,linea1;
+    string cambio="",compara="",nombre,genero,disponible="70-70",linea1;
+    int tiempo,hora,edad;
     char linea[400];
     while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
@@ -227,25 +224,21 @@ void Administrador::Agregarpelicula(){
         linea1=to_string(sala)+"/";
         if(stoi(compara)==sala){        //Es la pelicula a actualizar.
             cout<<"Ingrese el nombre de la pelicula: "<<endl;
-            cin>>nombre;
-            cin.ignore();
+            cin.ignore(100, '\n');
+            getline(cin,nombre);
             linea1+=nombre+"/";
             cout<<"Genero de la pelicula: "<<endl;
             cin>>genero;
-            cin.ignore();
             linea1+=genero+"/";
             cout<<"Duracion de la pelicula en minutos: "<<endl;
             cin>>tiempo;
-            cin.ignore();
-            linea1+=tiempo+"min/";
-            cout<<"Hora a la que se dara la pelicula(con formato am o pm): "<<endl;
+            linea1+=to_string(tiempo)+" min/";
+            cout<<"Hora a la que se dara la pelicula(24h): "<<endl;
             cin>>hora;
-            cin.ignore();
-            linea1+=hora+"/"+disponible+"/";
-            cout<<"Ingrese la edad minima: "<<endl;;
+            linea1+=to_string(hora)+"/"+disponible+"/";
+            cout<<"Ingrese la edad minima: "<<endl;
             cin>>edad;
-            cin.ignore();
-            linea1+=edad+"+";
+            linea1+=to_string(edad)+"+";
             final<<linea1<<endl;
         }else{
             final<<linea<<endl;
