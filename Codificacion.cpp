@@ -39,9 +39,10 @@ string codificacion::convascii(string binario){
     return letra;
 }
 //Codificación por el método 2 de la práctica 2.
-string codificacion::Cod2(string binario,int n){
-    for(int i=0;i<binario.length();i++){    //Convierte string recibido a binario.
-        binario+=codi.convbinario(binario[i]);
+string codificacion::Cod2(string binario1,int n){
+    string binario="";
+    for(int i=0;i<binario1.length();i++){    //Convierte string recibido a binario.
+        binario+=codi.convbinario(binario1[i]);
     }
     double elev=1,pot=0;  //Nota inicio.
     if(n==1){

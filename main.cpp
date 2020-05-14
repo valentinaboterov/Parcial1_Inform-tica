@@ -3,16 +3,19 @@
 #include<Usuario.h>
 #include<Administrador.h>
 
+
 using namespace std;
+
 
 int main()
 {
     int opcion=0,opcion1=0;
-    string clave="";
+    string clave="",fecha="";
     Registro registro;
     Administrador admin;
     Usuario usuario;
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;
+    cout<<"Porfavor ingrese la fecha de hoy (day/month/year): ";cin>>fecha; cout<<endl;
     while(opcion1!=3){
         cout<<"-------------------------Como desea ingresar?------------------------- "<<endl;
         cout<<"1. Administrador."<<endl;
@@ -56,35 +59,39 @@ int main()
         }
         if(opcion1==2){  //Ingresar como usuario.
                    cout<<"Desea: "<<endl<<"1. Iniciar sesion."<<endl<<"2.Registrarse."<<endl;
-                   cout<<opcion;
+                   cin>>opcion;
                    if(opcion==1){       // Inciar sesion.
-                       string id="",clave="";
-                       cout<<"Ingrese su ID: "<<endl; cin>>id;
-                       cout<<"Ingrese su clave de 4 digitos: "<<endl; cin>>clave;
+                       string id="",clave="",reporte="";
+                       cout<<endl<<"Ingrese su ID: "; cin>>id;
+                       cout<<"Ingrese su clave de 4 digitos: "; cin>>clave; cout<<endl;
                        if(registro.Usuario(id,clave)==true){        //Inicio de sesión
                            int sala=0,preci=0,cont=1,columna=0,billetes,compra=1;
-                            char fila;
+                           char fila;
                            usuario.Bienvenido();
                            while(compra!=0){
                                admin.imprimirCartelera();admin.imprimirestreno();
-                               cout<<"Profavor ingrese la sala en la que se está dando la película que desea ver: "<<endl; cin>>sala;
-                               admin.MostrarPrecios();preci=admin.PreciosPelicula(sala);
-                               cout<<"El asiento para la pelicula que desea ver tiene un valor de:"<<preci<<"Desea continuar? "<<"1.Si, 0.No"<<endl;
+                               cout<<endl<<"Porfavor ingrese la sala en la que se esta dando la pelicula que desea ver: "<<endl; cin>>sala;
+                               admin.MostrarPrecios();
+                               preci=admin.PreciosPelicula(sala);
+                               cout<<endl<<"El asiento para la pelicula que desea ver tiene un valor de:"<<preci<<". Desea continuar? "<<"1.Si  0.No"<<endl;
                                cin>>cont;
                                if(cont==1){
+                                   reporte="Usuario:"+id+",sala:"+to_string(sala)+", cancelo: "+to_string(preci);
+                                   admin.Reportediario(fecha,reporte);
                                    admin.imprimirSala(sala);
-                                   cout<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila; cout<<endl;
+                                   cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
                                    cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
-                                   cout<<"Desea cancelar en efectivo o tarjeta? 1.Tajeta,2.Efectivo";cin>>cont;
+                                   cout<<"Desea cancelar en efectivo o tarjeta? 1.Tajeta,2.Efectivo"<<endl;cin>>cont;
                                    if(cont==2){
                                        cout<<"Cantidad de dinero en billetes: "; cin>>billetes;
                                         usuario.Pago(billetes,preci);
-                                   } usuario.Actualizarcartelera(sala);usuario.Actualizardisponibilidad(sala,fila,columna);
+                                   } usuario.Actualizarcartelera(sala);
+                                    usuario.Actualizardisponibilidad(sala,fila,columna);
                                    cout<<"Desea hacer otra compra? 1.Si,0.No"<<endl; cin>>compra;
                                }
                          }
-                       }
-                   }else{
+                       }else{ cout<<"Usuario no encontrado. "<<endl;}
+                   }else{               //Registrar usuario.
                        string id="",clave="",nombre="";
                        cout<<"Porfavor ingrese su ID: "; cin>>id; cout<<endl;
                        cout<<"Ingrese su nombre: "; cin>>nombre; cout<<endl;
@@ -92,6 +99,16 @@ int main()
                        registro.RegistroUsuario(id,nombre,clave);
                        cout<<"Para validar su cuenta inicie sesion como usuario. "<<endl;
                    }
-        }if(opcion1==3){cout<<endl<<"---------------------Gracias y vuelva pronto!-----------------------"<<endl;}
+        }if(opcion1==3){
+            cout<<endl<<"---------------------Gracias y vuelva pronto!-----------------------"<<endl;
+            //Se inicializa todo en cero para nuevo dia.
+            string linea1="1/",linea2="2/",linea3="3/",linea4="4/",linea5="5/";
+            ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");       //Copia para modificar disponibilidad
+            final<<linea1<<endl<<linea2<<endl<<linea3<<endl<<linea4<<endl<<linea5<<endl;
+            usuario.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Disponibilidad.txt");
+            final.close();
+        }
     }
 }
+
+

@@ -14,7 +14,7 @@ class Administrador{
     void imprimirSala(int sala);
     void imprimirCartelera();
     void Agregarpelicula();
-    void Reportediario(int dia,string datos);   //Recibe el día y los datos de la venta(Usuario,sala,pelicula y costo).
+    void Reportediario(string dia,string datos);   //Recibe el día y los datos de la venta(id,sala).
     void MostrarReporte();
     void MostrarPrecios();
     void Agregarestrenos();

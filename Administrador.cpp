@@ -82,13 +82,15 @@ int PreciosPelicula(int sala){
 void Administrador::imprimirCartelera(){
     cout<<endl;
     char linea[400];
-    string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="";
+    string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="",linea1="";
     ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
     cout<<"                                CARTELERA DISPONIBLE                                                    "<<endl;
     cout<<"| Sala |"<<"  Genero  |"<<"  Tiempo  |"<<"  Hora  |"<<" Disponibilidad |"<<"  Edad |"<<"    Nombre"<<endl;
     cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
     while(!peliculas.eof()){
        peliculas.getline(linea,sizeof(linea));
+       linea1=linea;
+       if(linea1.length()<1){break;}        //No hay mas peliculas.
        sala=admin.BuscarPelicula(linea,1);
        nombre=admin.BuscarPelicula(linea,2);
        genero=admin.BuscarPelicula(linea,3);
@@ -104,20 +106,25 @@ void Administrador::imprimirCartelera(){
 void Administrador::imprimirestreno(){
     cout<<endl<<endl<<endl;
     char linea[400];
+    string linea1;
     string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="";
-    ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
+    ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
     cout<<"                                PROXIMOS ESTRENOS                                                 "<<endl;
-    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  Edad |"<<"    Nombre"<<endl;
+    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  "<<"    Nombre"<<endl;
     cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
     while(!peliculas.eof()){
        peliculas.getline(linea,sizeof(linea));
+        linea1=linea;
+        if(linea1.length()<1){      //No hay más estrenos
+            break;
+        }
        sala=admin.BuscarPelicula(linea,1);
        nombre=admin.BuscarPelicula(linea,2);
        genero=admin.BuscarPelicula(linea,3);
        tiempo=admin.BuscarPelicula(linea,4);
        disponible=admin.BuscarPelicula(linea,5);
        edad=admin.BuscarPelicula(linea,6);
-       cout<<"|"<<sala<<"    "<<genero <<"  "<<tiempo<<"  "<<disponible<<"  "<<edad<<"   "<< nombre<<endl;
+       cout<<"|"<<sala<<"    "<<genero <<"  "<<tiempo<<"  "<<disponible<<"   "<< nombre<<endl;
        cout<<"|-------------------------------------------------------------------------------------------------------------------"<<endl;
     }peliculas.close();
 };
@@ -180,7 +187,7 @@ void Administrador::Agregarestrenos(){
     //Definición de variables.
     string nombre="",genero="",edad="",sala="",tiempo="";
     ofstream archivo;       //Archivo de salida
-    archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");     //Abre el archivo.
+    archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt",std::fstream::app);     //Abre el archivo y agrega al final.
     if(!archivo.is_open()){     //Verifica si logró abrir el archivo.
         cout<<"Error al abrir archivo"<<endl;
         exit(1);
@@ -194,28 +201,30 @@ void Administrador::Agregarestrenos(){
     archivo.close();        //Cierr el archivo.
 };
 
-//Agregar película
+//Las peliculas se definen por disponibilidad de sala, por ende lo que hace es modificarse si ya esta ocupada
 void Administrador::Agregarpelicula(){
-    cout<<"Ingrese el numero de la sala en la que se proyectará la película, teniendo en cuenta que:"<<endl;
-    int sala=0;
-    string nombre="",genero="",tiempo="",hora="",dispo="",edad="";
-    cout<<"Sala 1: 2D"<<endl<<"Sala 2: 2D"<<endl<<"Sala 3: 3D"<<endl<<"Sala 4: 3D"<<endl<<"Sala 5: VibroSound 3D"<<endl;
-    cin>>sala;
-    cout<<"Ingrese el nombre de la pelicula: ";cin>>nombre; cout<<endl;
-    cout<<"Ingrese el género: "; cin>>genero; cout<<endl;
-    cout<<"Ingrese la duración en minutos: "; cin>>tiempo; cout<<endl;
-    cout<<"Ingrese el horario incluyendo(pm o am): ";cin>>hora; cout<<endl;
-    cout<<"Ingrese la siponibilidad de los 70 asientos:";cin>>dispo;cout<<endl;
-    cout<<"Ingrese la edad mínima: "; cin>>edad; cout<<endl;
-    ofstream salida;
-    salida.open("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
-    if(!salida.is_open()){
-        cout<<"Error al abrir archivo."<<endl;
-        exit(1);
-    }
-    salida<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<" mi"<<"/"<<hora<<"/"<<dispo<<"-70/"<<edad<<"+"<<endl;
-    salida.close();
-    admin.imprimirCartelera();
+    int sala;
+    cout<<"Ingrese la sala donde se proyectara la pelicula: ";cin>>sala; cout<<endl;
+    ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
+    ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
+    string cambio="",compara="",nombre="",genero="",tiempo="",hora="",disponible="70-70",edad="",linea1="";
+    char linea[400];
+    while(!archivo.eof()){
+        archivo.getline(linea,sizeof (linea));
+        compara=admin.BuscarPelicula(linea,1);  //Retorna el normbre de pelicula en la linea
+        if(stoi(compara)==sala){        //Es la pelicula a actualizar.
+            cout<<"Ingrese el nombre de la pelicula: "; cin>>nombre; cout<<endl;
+            cout<<"Genero de la pelicula: "; cin>>genero; cout<<endl;
+            cout<<"Duracion de la pelicula en minutos: "; cin>>tiempo; cout<<endl;
+            cout<<"Hora a la que se dara la pelicula(con am o pm): "; cin>>hora; cout<<endl;
+            cout<<"Ingrese la edad minima: "; cin>>edad; cout<<endl;
+            linea1=to_string(sala)+"/"+nombre+"/"+genero+"/"+tiempo+" min"+"/"+hora+"/"+disponible+"/"+edad+"+";
+            final<<linea1<<endl;
+        }else{
+            final<<linea<<endl;
+        }
+    }archivo.close();final.close();
+    usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
 };
 //Eliminiar pelicula o estreno
 void Administrador::EliminarP(string nombre){
@@ -248,17 +257,24 @@ void Administrador::EliminarE(string nombre){
 };
 
 //Reporte diario
-void Administrador::Reportediario(int dia,string datos){
+void Administrador::Reportediario(string dia,string datos){
     ofstream salida("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt");
-    salida<<"Reporte: "<<dia<<endl<<datos<<endl;
+    salida<<"Reporte: "<<"dia: "<<dia<<"->"<<datos<<endl;
+    salida.close();
 };
 void Administrador::MostrarReporte(){
     char linea[400];
     ifstream archivo;
     archivo.open("C:/User/WIN10 PRO/Documents/Parcial1/Reporte.txt");
-    while(!archivo.is_open()){
+    while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
-        cout<<linea<<endl;
+        string linea1=linea;
+        if(linea1.length()<1){
+           cout<< "No hay reportes."<<endl;
+           break;
+        }else{
+            cout<<linea<<endl;
+        }
     }
     archivo.close();
 };
@@ -333,6 +349,24 @@ string Administrador::BuscarPelicula(string linea,int romper){
     if(romper==6){return s6;}   //Disponibilidad
     if(romper>6){return s7;}    //Años
 };
+
+//Preciso segun sala
+int Administrador::PreciosPelicula(int sala){
+    ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Salas.txt");
+    string compara="";
+    int precio=0;
+    char linea[400];
+    while(!archivo.eof()){
+        archivo.getline(linea, sizeof(linea));
+        compara=admin.BuscarDisponible(linea,1);        //Retorna la sala de la linea
+        if(stoi(compara)==sala){
+            precio=stoi(admin.BuscarDisponible(linea,2));
+            break;
+        }
+    }archivo.close();
+    return precio;
+};
+
 string Administrador::BuscarDisponible(string linea, int romper){
     //Inicializacion de variables.
     //cant:Cantidad e elementos para el subplot,cont:acceder a diferentes valores, pos:Saber donde inicia cada valor.
