@@ -15,7 +15,7 @@ int main()
     Administrador admin;
     Usuario usuario;
     cout<<"------------------------------Bienvenido!------------------------------"<<endl;
-    cout<<"Porfavor ingrese la fecha de hoy (day/month/year): ";cin>>fecha; cout<<endl;
+    cout<<"Por favor ingrese la fecha de hoy (dia-mes-anio): ";cin>>fecha; cout<<endl;
     while(opcion1!=3){
         cout<<"-------------------------Como desea ingresar?------------------------- "<<endl;
         cout<<"1. Administrador."<<endl;
@@ -40,6 +40,7 @@ int main()
                            admin.MostrarReporte();
                        }if(opcion==4){      //Eliminar estreno.
                            string nombre="";
+                           admin.imprimirestreno();
                            cout<<"Ingrese el nombre del estreno que desea eliminar: "<<endl;
                            cin>>nombre;
                            admin.EliminarE(nombre);
@@ -76,7 +77,7 @@ int main()
                                    cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
                                    cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
                                    while(usuario.Silladisponible(sala,fila,columna)==false){    //Silla no disponible.
-                                       cout<<"La silla no está disponible.Ingrese otra:"<<endl;
+                                       cout<<"La silla no esta disponible.Ingrese otra:"<<endl;
                                        cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
                                        cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
                                    }
@@ -84,8 +85,7 @@ int main()
                                    cout<<"Desea cancelar en efectivo o tarjeta? 1.Tajeta,2.Efectivo"<<endl;cin>>cont;
                                    if(cont==2){
                                         cout<<"Cantidad de dinero en billetes: "; cin>>billetes;
-                                        while(usuario.Pago(billetes,preci)==-1){cout<<"Cantidad de dinero en billetes: "; cin>>billetes;};
-                                        cout<<"Su devuelta es: "<<usuario.Pago(billetes,preci)<<endl;
+                                        while(usuario.Pago(billetes,preci)==false){cout<<"Cantidad de dinero en billetes: "; cin>>billetes;};
                                    } usuario.Actualizarcartelera(sala);
                                    usuario.Actualizardisponibilidad(sala,fila,columna);
                                    cout<<"Desea hacer otra compra? 1.Si,0.No"<<endl; cin>>compra;

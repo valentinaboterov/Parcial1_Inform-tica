@@ -1,4 +1,0 @@
-Reporte: dia: 14/05/2020->Usuario:1017261289,sala:3, cancelo: 10800
-Reporte: dia: 14/05/2020->Usuario:1152215715,sala:4, cancelo: 10800
-Reporte: dia: 14/05/2020->Usuario:43579580,sala:5, cancelo: 11900
-Reporte: dia: 14/05/2020->Usuario:1017261289,sala:1, cancelo: 7900

@@ -69,14 +69,33 @@ void Usuario::Actualizardisponibilidad(int sala,char fila,int asiento){
     usua.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Disponibilidad.txt");
 };
 //Pago asiento
-int Usuario::Pago(int cantidad,int pago){
-    int devuelta=0;
+bool Usuario::Pago(int cantidad,int pago){
+    int n=0,devuelta=0;
+    n=pago;
+    int plata[10]={50000,20000,10000,5000,2000,1000,500,200,100,50},cant[10]={};
     if(cantidad<pago){
         cout<<"No es suficiente dinero."<<endl;
-        devuelta=-1;
+        return false;
     }else{
-        devuelta=cantidad-pago;     //Resta la cantidad en billetes con la cantidad a pagar.
-    }return devuelta;
+        devuelta=cantidad-pago;  //Resta la cantidad en billetes con la cantidad a pagar.
+        n=devuelta;
+        for(int i=0;i<=9;i++){    //For para recorrer arreglos.
+            cant[i]=n/plata[i];    //Cantidad de cada billete.
+            n-=cant[i]*plata[i];   //Se le resta a la cantidad inicial.
+        }cout<<"50000: "<<cant[0]<<endl;
+        cout<<"20000: "<<cant[1]<<endl;
+        cout<<"10000: "<<cant[2]<<endl;
+        cout<<"5000: "<<cant[3]<<endl;
+        cout<<"2000: "<<cant[4]<<endl;
+        cout<<"1000: "<<cant[5]<<endl;
+        cout<<"500: "<<cant[6]<<endl;
+        cout<<"200: "<<cant[7]<<endl;
+        cout<<"100: "<<cant[8]<<endl;
+        cout<<"50: "<<cant[9]<<endl;
+        cout<<"Faltante: "<<n<<endl;
+        cout<<"Su devuelta total es de: "<<devuelta<<endl;
+        return true;
+    }
 };
 //Silla diponible
 bool Usuario::Silladisponible(int sala,char fila, int columna){

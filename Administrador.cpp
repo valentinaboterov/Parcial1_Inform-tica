@@ -106,7 +106,7 @@ void Administrador::imprimirestreno(){
     string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="";
     ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
     cout<<"                                PROXIMOS ESTRENOS                                                 "<<endl;
-    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  "<<"Edada    |"<<"    Nombre"<<endl;
+    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  "<<"    Nombre"<<endl;
     cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
     while(!peliculas.eof()){
        peliculas.getline(linea,sizeof(linea));
@@ -119,7 +119,6 @@ void Administrador::imprimirestreno(){
        genero=admin.BuscarPelicula(linea,3);
        tiempo=admin.BuscarPelicula(linea,4);
        disponible=admin.BuscarPelicula(linea,5);
-       edad=admin.BuscarPelicula(linea,6);
        cout<<"|"<<sala<<"    "<<genero <<"  "<<tiempo<<"  "<<disponible<<"   "<< nombre<<endl;
        cout<<"|-------------------------------------------------------------------------------------------------------------------"<<endl;
     }peliculas.close();
@@ -132,7 +131,7 @@ void Administrador::imprimirSala(int sala){
     string fila;
     salas=admin.inicializacion();
     filas=salas[sala];
-    cout<<"---------------Sala "<<sala<<"------------------"<<endl;
+    cout<<"------------------Sala "<<sala<<"------------------"<<endl;
     cout<<"   1 2 3 4   5 6 7 8 9  10   11 12 13 14|"<<endl;;
     for(int i=0;i<5;i++){
         fila=admin.filas[i];
@@ -181,30 +180,43 @@ void Administrador::MostrarPrecios(){
 //Agregar y ver proximos estreno
 void Administrador::Agregarestrenos(){
     //Definición de variables.
-    string nombre="",genero="",edad="",sala="",tiempo="";
-    ofstream archivo;       //Archivo de salida
-    archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt",std::fstream::app);     //Abre el archivo y agrega al final.
+    char linea[400];
+    string nombre="",genero="",edad="",sala="",tiempo="",linea1="";
+    ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");      //Abre archivo
+    ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");   //Archivo salida temporal.
     if(!archivo.is_open()){     //Verifica si logró abrir el archivo.
         cout<<"Error al abrir archivo"<<endl;
         exit(1);
     }       //Pide datos del estreno.
-    cout<<"Ingrese el nombre de la pelicula: ";
-    cin>>nombre;
-    cout<<endl;
-    cout<<"Ingrese la sala en la que se va a proyectar: ";
-    cin>>sala;
-    cout<<endl;
-    cout<<"Ingrese el genero: ";
-    cin>>genero;
-    cout<<endl;
-    cout<<"Ingrese la fecha de estreno:(Dia-mes-año-hora) ";
-    cin>>tiempo;
-    cout<<endl;
-    cout<<"Ingrese la edad minima: ";
-    cin>>edad;
-    cout<<endl;
-    archivo<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<"/"<<"70-70"<<"/"<<edad<<"+"<<endl;       //Se agregan a la base de datos.
-    archivo.close();        //Cierr el archivo.
+    while(!archivo.eof()){
+        archivo.getline(linea,sizeof (linea));
+        linea1=linea;
+        if(linea1.length()<1){          //No hay mas estrenos.
+            cout<<"Ingrese el nombre de la pelicula: ";
+            cin>>nombre;
+            cout<<endl;
+            cout<<"Ingrese la sala en la que se va a proyectar: ";
+            cin>>sala;
+            cout<<endl;
+            cout<<"Ingrese el genero: ";
+            cin>>genero;
+            cout<<endl;
+            cout<<"Ingrese la fecha de estreno:(Dia-mes-anio-hora) ";
+            cin>>tiempo;
+            cout<<endl;
+            cout<<"Ingrese la edad minima: ";
+            cin>>edad;
+            cout<<endl;
+            final<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<"/"<<"70-70"<<"/"<<edad<<"+"<<endl;       //Se agregan a la base de datos
+            break;
+        }else{
+            final<<linea<<endl;
+        }
+    }
+        archivo.close(); final.close();       //Cierr el archivo.
+        //Cambia el archivo temporal por el nuevo
+        usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
+
 };
 
 //Las peliculas se definen por disponibilidad de sala, por ende lo que hace es modificarse si ya esta ocupada
@@ -214,7 +226,7 @@ void Administrador::Agregarpelicula(){
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
     string cambio="",compara="",nombre,genero,disponible="70-70",linea1;
-    int tiempo,hora,edad;
+    int tiempo=0,hora=0,edad=0;
     char linea[400];
     while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
