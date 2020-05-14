@@ -19,7 +19,6 @@ class Administrador{
     void MostrarPrecios();
     void Agregarestrenos();
     void imprimirestreno();
-    void EliminarP(string nombre);
     void EliminarE(string nombre);
     int PreciosPelicula(int sala);  //Recibe la sala en la que se da la pelicula.
     //Buscar componentes en archivos.

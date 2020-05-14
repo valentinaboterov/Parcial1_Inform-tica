@@ -29,7 +29,7 @@ int main()
             cin>>clave;cout<<endl;
             if(registro.Administrador(clave)==true){        //Clave correcta
                 opcion=registro.MenuAdmin();
-                while(opcion!=6){
+                while(opcion!=5){
                        if(opcion==1){   //Agregar pelicula.
                            admin.Agregarpelicula();
                            admin.imprimirCartelera();
@@ -38,13 +38,7 @@ int main()
                            admin.imprimirestreno();
                        }if(opcion==3){          //Ver reportes
                            admin.MostrarReporte();
-                       }if(opcion==4){  //Eliminar pelicula
-                           string nombre="";
-                           cout<<"Ingrese el nombre de la pelicula que desea eliminar: "<<endl;
-                           cin>>nombre;
-                           admin.EliminarP(nombre);
-                           admin.imprimirCartelera();
-                       }if(opcion==5){      //Eliminar estreno.
+                       }if(opcion==4){      //Eliminar estreno.
                            string nombre="";
                            cout<<"Ingrese el nombre del estreno que desea eliminar: "<<endl;
                            cin>>nombre;
@@ -81,12 +75,17 @@ int main()
                                    admin.imprimirSala(sala);
                                    cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
                                    cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
+                                   while(usuario.Silladisponible(sala,fila,columna)==false){    //Silla no disponible.
+                                       cout<<"La silla no está disponible.Ingrese otra:"<<endl;
+                                       cout<<endl<<"Porfavor ingrese la letra de la fila en mayuscula: "; cin>>fila;
+                                       cout<<"Ingrese el numero de la columna:"; cin>>columna; cout<<endl<<endl;
+                                   }
                                    cout<<"Desea cancelar en efectivo o tarjeta? 1.Tajeta,2.Efectivo"<<endl;cin>>cont;
                                    if(cont==2){
-                                       cout<<"Cantidad de dinero en billetes: "; cin>>billetes;
+                                        cout<<"Cantidad de dinero en billetes: "; cin>>billetes;
                                         usuario.Pago(billetes,preci);
                                    } usuario.Actualizarcartelera(sala);
-                                    usuario.Actualizardisponibilidad(sala,fila,columna);
+                                   usuario.Actualizardisponibilidad(sala,fila,columna);
                                    cout<<"Desea hacer otra compra? 1.Si,0.No"<<endl; cin>>compra;
                                }
                          }

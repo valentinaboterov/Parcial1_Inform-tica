@@ -16,7 +16,7 @@ void Usuario::Bienvenido(){
     cout<<endl;
     string nombre;
     nombre=regis.nombreusuario;
-    cout<<"   Bienvenid@ "<<nombre<<"!"<<endl;
+    cout<<"   Bienvenid@ "<<"!"<<nombre<<endl;
 };
 //Actualizar cartelera
 void Usuario::Actualizarcartelera(int sala){
@@ -26,18 +26,23 @@ void Usuario::Actualizarcartelera(int sala){
     string cambio="",compara="",nombre="",genero="",tiempo="",hora="",disponible="",edad="",linea1="";
     char linea[400];
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof (linea));
+        archivo.getline(linea,sizeof (linea));linea1=linea;
+        if(linea1.length()<1){break;}       //Ya acabo el archivo
         compara=admini.BuscarPelicula(linea,1);  //Retorna el normbre de pelicula en la linea
         if(stoi(compara)==sala){        //Es la pelicula a actualizar.
-            nombre=admini.BuscarPelicula(linea,2);genero=admini.BuscarPelicula(linea,3);tiempo=admini.BuscarPelicula(linea,4);
-            hora=admini.BuscarPelicula(linea,5);disponible=admini.BuscarPelicula(linea,6);edad=admini.BuscarPelicula(linea,7);
+            nombre=admini.BuscarPelicula(linea,2);
+            genero=admini.BuscarPelicula(linea,3);
+            tiempo=admini.BuscarPelicula(linea,4);
+            hora=admini.BuscarPelicula(linea,5);
+            disponible=admini.BuscarPelicula(linea,6);
+            edad=admini.BuscarPelicula(linea,7);
             while(disponible[pos]!='-'){
                 cambio+=disponible[pos];
                 pos+=1;
             }
-            dis=stoi(cambio)-1;
+            dis=(stoi(cambio))-1;
             disponible=to_string(dis)+"-70";
-            linea1=to_string(sala)+"/"+nombre+"/"+genero+"/"+tiempo+"/"+hora+"/"+disponible+"/"+edad+"+";
+            linea1=to_string(sala)+"/"+nombre+"/"+genero+"/"+tiempo+"/"+hora+"/"+disponible+"/"+edad;
             final<<linea1<<endl;
         }else{
             final<<linea<<endl;
@@ -52,7 +57,8 @@ void Usuario::Actualizardisponibilidad(int sala,char fila,int asiento){
     string cambio="",compara="",linea1="";
     char linea[400];
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof (linea));
+        archivo.getline(linea,sizeof (linea)); linea1=linea;
+        if(linea1.length()<1){break;}
         compara=admini.BuscarDisponible(linea,1);
         if(stoi(compara)==sala){        //Sala a actualizar.
             cambio=fila+to_string(asiento)+",";
@@ -71,6 +77,23 @@ void Usuario::Pago(int cantidad,int pago){
     devuelta=cantidad-pago;     //Resta la cantidad en billetes con la cantidad a pagar.
     cout<<"Su devuelta es: "<<devuelta<<endl;
 };
+//Silla diponible
+bool Usuario::Silladisponible(int sala,char fila, int columna){
+    map<int,map<string,vector<int>>> salas;
+    map<string,vector<int>> filas;
+    vector<int> sillas;
+    string filaux="";
+    filaux+=fila;
+    salas=admini.inicializacion();
+    filas=salas[sala];
+    sillas=filas[filaux];
+    if(sillas[columna-1]==0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 //Cambiar archivo temporal por actualizado.
 void Usuario::llenararchivo(string temp,string origi){
     char linea[200];

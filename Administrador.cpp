@@ -4,7 +4,7 @@
 #include<vector>
 #include<string>
 #include<stdlib.h>
-#include <bits/stdc++.h>
+
 
 Administrador admin;
 Usuario usu;
@@ -110,7 +110,7 @@ void Administrador::imprimirestreno(){
     string nombre="",genero="",tiempo="",sala="",hora="",disponible="",edad="";
     ifstream peliculas("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
     cout<<"                                PROXIMOS ESTRENOS                                                 "<<endl;
-    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  "<<"    Nombre"<<endl;
+    cout<<"| Sala |"<<"  Genero  |"<<"  Fecha Estreno   |"<<" Disponibilidad |"<<"  "<<"Edada    |"<<"    Nombre"<<endl;
     cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
     while(!peliculas.eof()){
        peliculas.getline(linea,sizeof(linea));
@@ -161,7 +161,7 @@ void Administrador::imprimirSala(int sala){
 
         }cout<<"|"<<endl;
     }
-    cout<<"---------------------------------------"<<endl;
+    cout<<"-------------Pantalla--------------------"<<endl;
 };
 
 
@@ -192,11 +192,21 @@ void Administrador::Agregarestrenos(){
         cout<<"Error al abrir archivo"<<endl;
         exit(1);
     }       //Pide datos del estreno.
-    cout<<"Ingrese el nombre de la pelicula: "; cin>>nombre; cout<<endl;
-    cout<<"Ingrese la sala en la que se va a proyectar: "; cin>>sala; cout<<endl;
-    cout<<"Ingrese el genero: "; cin>>genero; cout<<endl;
-    cout<<"Ingrese la fecha de estreno:(Dia-mes-año-hora) "; cin>>tiempo; cout<<endl;
-    cout<<"Ingrese la edad minima: "; cin>>edad; cout<<endl;
+    cout<<"Ingrese el nombre de la pelicula: ";
+    cin>>nombre;
+    cout<<endl;
+    cout<<"Ingrese la sala en la que se va a proyectar: ";
+    cin>>sala;
+    cout<<endl;
+    cout<<"Ingrese el genero: ";
+    cin>>genero;
+    cout<<endl;
+    cout<<"Ingrese la fecha de estreno:(Dia-mes-año-hora) ";
+    cin>>tiempo;
+    cout<<endl;
+    cout<<"Ingrese la edad minima: ";
+    cin>>edad;
+    cout<<endl;
     archivo<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<"/"<<"70-70"<<"/"<<edad<<"+"<<endl;       //Se agregan a la base de datos.
     archivo.close();        //Cierr el archivo.
 };
@@ -207,18 +217,35 @@ void Administrador::Agregarpelicula(){
     cout<<"Ingrese la sala donde se proyectara la pelicula: ";cin>>sala; cout<<endl;
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
-    string cambio="",compara="",nombre="",genero="",tiempo="",hora="",disponible="70-70",edad="",linea1="";
+    string cambio="",compara="",nombre,genero,tiempo,hora,disponible="70-70",edad,linea1;
     char linea[400];
     while(!archivo.eof()){
         archivo.getline(linea,sizeof (linea));
         compara=admin.BuscarPelicula(linea,1);  //Retorna el normbre de pelicula en la linea
+        linea1=linea;
+        if(linea1.length()<1){break;}
+        linea1=to_string(sala)+"/";
         if(stoi(compara)==sala){        //Es la pelicula a actualizar.
-            cout<<"Ingrese el nombre de la pelicula: "; cin>>nombre; cout<<endl;
-            cout<<"Genero de la pelicula: "; cin>>genero; cout<<endl;
-            cout<<"Duracion de la pelicula en minutos: "; cin>>tiempo; cout<<endl;
-            cout<<"Hora a la que se dara la pelicula(con am o pm): "; cin>>hora; cout<<endl;
-            cout<<"Ingrese la edad minima: "; cin>>edad; cout<<endl;
-            linea1=to_string(sala)+"/"+nombre+"/"+genero+"/"+tiempo+" min"+"/"+hora+"/"+disponible+"/"+edad+"+";
+            cout<<"Ingrese el nombre de la pelicula: "<<endl;
+            cin>>nombre;
+            cin.ignore();
+            linea1+=nombre+"/";
+            cout<<"Genero de la pelicula: "<<endl;
+            cin>>genero;
+            cin.ignore();
+            linea1+=genero+"/";
+            cout<<"Duracion de la pelicula en minutos: "<<endl;
+            cin>>tiempo;
+            cin.ignore();
+            linea1+=tiempo+"min/";
+            cout<<"Hora a la que se dara la pelicula(con formato am o pm): "<<endl;
+            cin>>hora;
+            cin.ignore();
+            linea1+=hora+"/"+disponible+"/";
+            cout<<"Ingrese la edad minima: "<<endl;;
+            cin>>edad;
+            cin.ignore();
+            linea1+=edad+"+";
             final<<linea1<<endl;
         }else{
             final<<linea<<endl;
@@ -226,28 +253,15 @@ void Administrador::Agregarpelicula(){
     }archivo.close();final.close();
     usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
 };
-//Eliminiar pelicula o estreno
-void Administrador::EliminarP(string nombre){
-  ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
-  ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
-  char linea[400];
-  string compara="";
-  while(!archivo.eof()){
-      archivo.getline(linea,sizeof(linea));
-      compara=admin.BuscarPelicula(linea,2);
-      if(compara!=nombre){         //No pasa la linea de la pelicula que se quiere eliminar.
-          final<<linea<<endl;
-      }
-  }archivo.close();final.close();
-  usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
-};
+
 void Administrador::EliminarE(string nombre){
     ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Estrenos.txt");
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
     char linea[400];
-    string compara="";
+    string compara="",linea1="";
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof(linea));
+        archivo.getline(linea,sizeof(linea)); linea1=linea;
+        if( linea1.length() <1){break;}         //No hay mas estrenos.
         compara=admin.BuscarPelicula(linea,2);
         if(compara!=nombre){         //No pasa la linea de la pelicula que se quiere eliminar.
             final<<linea<<endl;
@@ -258,21 +272,27 @@ void Administrador::EliminarE(string nombre){
 
 //Reporte diario
 void Administrador::Reportediario(string dia,string datos){
-    ofstream salida("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt");
+    ofstream salida("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt",std::fstream::app); //Lo abre como salid ay agrega al final.
     salida<<"Reporte: "<<"dia: "<<dia<<"->"<<datos<<endl;
     salida.close();
 };
 void Administrador::MostrarReporte(){
     char linea[400];
-    ifstream archivo;
-    archivo.open("C:/User/WIN10 PRO/Documents/Parcial1/Reporte.txt");
+    ifstream archivo("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt");
+    string linea1="";
+    int cont=0;
+    if(!archivo.is_open()){
+        cout<<"Eror al abrir el archivo."<<endl;
+        exit(1);
+    }
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof (linea));
-        string linea1=linea;
-        if(linea1.length()<1){
+        cont+=1;
+        archivo.getline(linea,sizeof (linea)); linea1=linea;
+        if(linea1.length()<1 && cont<1){            //En la primera linea.
            cout<< "No hay reportes."<<endl;
            break;
         }else{
+           if(linea1.length()<1){break;}      //Ya no hay más reportes.
             cout<<linea<<endl;
         }
     }

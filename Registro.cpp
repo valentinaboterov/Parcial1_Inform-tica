@@ -38,9 +38,8 @@ int Registro::MenuAdmin(){
     cout<<"1. Agregar pelicula."<<endl;
     cout<<"2. Ingresar pelicula para estreno."<<endl;
     cout<<"3. Ver reporte."<<endl;
-    cout<<"4. Elmininar pelicula de cartelera."<<endl;
-    cout<<"5. Eliminar estreno."<<endl;
-    cout<<"6.Salir."<<endl;
+    cout<<"4. Eliminar estreno."<<endl;
+    cout<<"5.Salir."<<endl;
     cout<<"Ingrese la opcion deseada: ";
     cin>>opcion; cout<<endl;
     return opcion;
@@ -49,7 +48,7 @@ int Registro::MenuAdmin(){
 bool Registro::Usuario(string id,string clave){
     bool ban1=true,ban2=true,acceso=false;
     char linea[400];
-    string idoriginal="",claveoriginal="";
+    string idoriginal="",claveoriginal="",nombre="";
     int cont=0;;
     Registro regis;
     codificacion cod;
@@ -73,6 +72,8 @@ bool Registro::Usuario(string id,string clave){
               }
           }if(ban1==true&&ban2==true){
               return true;
+              nombre=regis.Buscar(linea,2);
+              regis.nombreusuario=nombre;
               acceso=true;
           }if(acceso==true){
             return acceso;

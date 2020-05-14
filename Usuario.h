@@ -15,5 +15,6 @@ class Usuario{
     void Actualizarcartelera(int sala);
     void Pago(int cantida,int pago);     //Retorna la devuelta según pago
     void llenararchivo(string origi,string temp);
+    bool Silladisponible(int sala,char fila,int columna);
 };
 #endif // USUARIO_H
