@@ -55,21 +55,21 @@ bool Registro::Usuario(string id,string clave){
     ifstream base("C:/Users/WIN10 PRO/Documents/Parcial1/Registro.txt");
     while(!base.eof()){
         cont+=1;
-        base.getline(linea,sizeof(linea));
+        base.getline(linea,sizeof(linea));  //Obtiene la linea
         if(cont>1){ //El primer renglon es el administrador.
-          idoriginal=regis.Buscar(linea,1);
+          idoriginal=regis.Buscar(linea,1);     //Obtiene lo original para comparar
           claveoriginal=regis.Buscar(linea,3);
-          for(int i=0;i<id.length();i++){
+          for(int i=0;i<id.length();i++){       //Busca el id en la base de datos
               if(idoriginal[i]!=id[i]){
                   ban1=false;
                   break;
               }
-          }for(int i=0;i<clave.length();i++){
+          }for(int i=0;i<clave.length();i++){       //Busca la clave en la base de datos
               if(claveoriginal[i]!=clave[i]){
                   ban2=false;
                   break;
               }
-          }if(ban1==true&&ban2==true){
+          }if(ban1==true&&ban2==true){      //El id y clave se encontraron
               return true;
               nombre=regis.Buscar(linea,2);
               regis.nombreusuario=nombre;
@@ -95,7 +95,7 @@ void Registro::RegistroUsuario(string id,string nombre,string clave){
         cout<<"Error al abrir el archivo de salida."<<endl;
         exit(1);
     }
-    archivosalida<<id<<"/"<<nombre<<"/"<<clave<<endl;
+    archivosalida<<id<<"/"<<nombre<<"/"<<clave<<endl;       //Lo agrega al final en formato respectivo
     archivosalida.close();
     cout<<"Registro exitoso!"<<endl;
 }

@@ -6,15 +6,15 @@ Administrador admin;
 Usuario usu;
 //Inicializa disponibilidad de salas según archivo
 map<int,map<string,vector<int>>> Administrador::inicializacion(){
-     map<int,map<string,vector<int>>> salas;
-    char linea[400],filaux;
+     map<int,map<string,vector<int>>> salas;        //Mapa global
+    char linea[400],filaux;         //Definicion de variables.
     string sala="",disponible="",fila="",str="",filaaux="";
     ifstream archivo;
     int pos=0;
     vector<int> aux1;   //Filas
-    map<string,vector<int>> aux;    //Fila y ocupados
+    map<string,vector<int>> aux;    //Fila y asientos
     archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Disponibilidad.txt");
-    if(!archivo.is_open()){
+    if(!archivo.is_open()){     //Comprueba si logro abrir el archivo.
         cout<<"Error al abrir archivo."<<endl;
         exit(1);
     }
@@ -32,10 +32,10 @@ map<int,map<string,vector<int>>> Administrador::inicializacion(){
         sala=admin.BuscarDisponible(linea,1);
         disponible=admin.BuscarDisponible(linea,2);
             for(int i=0;i<5;i++){       //Busca cada sala y reserva las sillas ocupadas
-                filaux=admin.filas[i];
+                filaux=admin.filas[i];      //Obtiene los nombres de las 5 filas
                 if(disponible.length()>1){         //Tiene sillas ocupadas.
                     aux=salas[stoi(sala)];          //Obtiene mapa de cada sala para actualizar.
-                    aux1=aux[filaaux];
+                    aux1=aux[filaaux];          //Obtiene asientos de la sala que se analiza
                     for(int j=0;j<disponible.length();j++){     //Hay sillas reservadas.
                         if(disponible[j]==filaux){      //Se analiza cada fila.
                             pos=j;
@@ -49,14 +49,17 @@ map<int,map<string,vector<int>>> Administrador::inicializacion(){
                             filaaux=filaux;     //Conviertea string.
                          }
                     }aux[filaaux]=aux1;     //Guarda el vector respectivo de la fila.
-                    aux1.clear();
+                    aux1.clear();       //Reinicia la variable.
                     salas[stoi(sala)]=aux; //Actualiza en mapa global
-                 }else{ i=5; }
+                 }else{ i=5; }  //No tiene sillas ocupadas.
             }
     }archivo.close();
-    return salas;
+    return salas;       //Retorna mapa global inicializado.
 };
+
+//Muestra el precio según la sala
 int PreciosPelicula(int sala){
+    //Definicion de variables.
     int precio=0;
     char linea[400];
     int compara=0;
@@ -64,11 +67,11 @@ int PreciosPelicula(int sala){
     ifstream archivo;
     archivo.open("C:/Users/WIN10 PRO/Documents/Parcial1/Salas.txt");
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof (linea));
-        compara=stoi(admin.BuscarDisponible(linea,1));
-        if(compara==sala){
-            valor=admin.BuscarDisponible(linea,2);
-            precio=stoi(valor);
+        archivo.getline(linea,sizeof (linea));      //Obtiene por lineas.
+        compara=stoi(admin.BuscarDisponible(linea,1));  //Busca la sala de la linea
+        if(compara==sala){      //Est en la linea deseada
+            valor=admin.BuscarDisponible(linea,2);      //BUsca el precio de la sala
+            precio=stoi(valor);     //Lo convierte en entero
         }
     }
     return precio;
@@ -84,7 +87,7 @@ void Administrador::imprimirCartelera(){
     cout<<"| Sala |"<<"  Genero  |"<<"  Tiempo  |"<<"  Hora  |"<<" Disponibilidad |"<<"  Edad |"<<"    Nombre"<<endl;
     cout<<"|--------------------------------------------------------------------------------------------------------------------"<<endl;
     while(!peliculas.eof()){
-       peliculas.getline(linea,sizeof(linea));
+       peliculas.getline(linea,sizeof(linea));      //Obtiene cada linea(Cada pelicula)
        linea1=linea;
        if(linea1.length()<1){break;}        //No hay mas peliculas.
        sala=admin.BuscarPelicula(linea,1);
@@ -94,12 +97,13 @@ void Administrador::imprimirCartelera(){
        hora=admin.BuscarPelicula(linea,5);
        disponible=admin.BuscarPelicula(linea,6);
        edad=admin.BuscarPelicula(linea,7);
+       //Imprime segun formato.
        cout<<"|"<<sala<<"    "<<genero <<"  "<<tiempo<<" "<<hora<<"  "<<disponible<<"  "<<edad<<"  "<< nombre<<endl;
        cout<<"|-------------------------------------------------------------------------------------------------------------------"<<endl;
     }peliculas.close();
 }
 //Imprimir estrenos
-void Administrador::imprimirestreno(){
+void Administrador::imprimirestreno(){  //Igual a pelicula, cambia formato.
     cout<<endl<<endl<<endl;
     char linea[400];
     string linea1;
@@ -129,13 +133,13 @@ void Administrador::imprimirSala(int sala){
     map<string,vector<int>> filas;
     vector<int> sillas;
     string fila;
-    salas=admin.inicializacion();
-    filas=salas[sala];
+    salas=admin.inicializacion();       //Obtiene el mapa global inicializado.
+    filas=salas[sala];      //Obtiene las filas en la sala que desea imprmir
     cout<<"------------------Sala "<<sala<<"------------------"<<endl;
     cout<<"   1 2 3 4   5 6 7 8 9  10   11 12 13 14|"<<endl;;
-    for(int i=0;i<5;i++){
-        fila=admin.filas[i];
-        sillas=filas[fila];
+    for(int i=0;i<5;i++){       //Recorre todas las filas (5) de la sala
+        fila=admin.filas[i];        //Obtiene cada fila
+        sillas=filas[fila];     //Obtiene los asientos
         cout<<fila<<"| ";
         for(int j=0;j<14;j++){
             if(j==4 || j==10){  //Corredores.
@@ -143,13 +147,13 @@ void Administrador::imprimirSala(int sala){
             }if(j>8){
                 if(sillas[j]==0){      //Silla disponible.
                     cout<<" - ";
-                }else{
+                }else{          //Silla no disponible
                     cout<<" + ";
                 }
             }else{
                 if(sillas[j]==0){      //Silla disponible.
                     cout<<"- ";
-                }else{
+                }else{      //Silla no disponible
                     cout<<"+ ";
                 }
             }
@@ -174,7 +178,7 @@ void Administrador::MostrarPrecios(){
         cout<<"   ------ --------------- -------"<<endl;
         cout<<"  |  4   |   General 3D   |10800  |"<<endl;
         cout<<"   ------ --------------- -------"<<endl;
-        cout<<"  |  5   | Vibro Sound 3D |11900  |"<<endl;
+        cout<<"  |  5   | Vibro Sound 3D |11900  |"<<endl<<endl;
 };
 
 //Agregar y ver proximos estreno
@@ -187,11 +191,12 @@ void Administrador::Agregarestrenos(){
     if(!archivo.is_open()){     //Verifica si logró abrir el archivo.
         cout<<"Error al abrir archivo"<<endl;
         exit(1);
-    }       //Pide datos del estreno.
+    }
     while(!archivo.eof()){
-        archivo.getline(linea,sizeof (linea));
+        archivo.getline(linea,sizeof (linea)); //Obtiene linea a linea
         linea1=linea;
-        if(linea1.length()<1){          //No hay mas estrenos.
+        if(linea1.length()<1){          //No hay mas estrenos(esta al final del archivo).
+            //Pide datos del estreno
             cout<<"Ingrese el nombre de la pelicula: ";
             cin>>nombre;
             cout<<endl;
@@ -209,7 +214,7 @@ void Administrador::Agregarestrenos(){
             cout<<endl;
             final<<sala<<"/"<<nombre<<"/"<<genero<<"/"<<tiempo<<"/"<<"70-70"<<"/"<<edad<<"+"<<endl;       //Se agregan a la base de datos
             break;
-        }else{
+        }else{      //Hay estreno entonces lo lleva al archivo final.
             final<<linea<<endl;
         }
     }
@@ -232,7 +237,8 @@ void Administrador::Agregarpelicula(){
         archivo.getline(linea,sizeof (linea));
         compara=admin.BuscarPelicula(linea,1);  //Retorna el normbre de pelicula en la linea
         linea1=linea;
-        if(linea1.length()<1){break;}
+        if(linea1.length()<1){break;}       //No hay mas peliculas
+        //En linea 1 se van almacenando los datos segun fotmato.
         linea1=to_string(sala)+"/";
         if(stoi(compara)==sala){        //Es la pelicula a actualizar.
             cout<<"Ingrese el nombre de la pelicula: "<<endl;
@@ -251,9 +257,9 @@ void Administrador::Agregarpelicula(){
             cout<<"Ingrese la edad minima: "<<endl;
             cin>>edad;
             linea1+=to_string(edad)+"+";
-            final<<linea1<<endl;
+            final<<linea1<<endl;        //Lo lleva aarchivo final
         }else{
-            final<<linea<<endl;
+            final<<linea<<endl;         //Si no es la sala a modificar se pasa la linea igual
         }
     }archivo.close();final.close();
     usu.llenararchivo("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt","C:/Users/WIN10 PRO/Documents/Parcial1/Peliculas.txt");
@@ -264,7 +270,7 @@ void Administrador::EliminarE(string nombre){
     ofstream final("C:/Users/WIN10 PRO/Documents/Parcial1/temp.txt");
     char linea[400];
     string compara="",linea1="";
-    while(!archivo.eof()){
+    while(!archivo.eof()){      //Busca la linea y compara el nombre
         archivo.getline(linea,sizeof(linea)); linea1=linea;
         if( linea1.length() <1){break;}         //No hay mas estrenos.
         compara=admin.BuscarPelicula(linea,2);
@@ -276,9 +282,9 @@ void Administrador::EliminarE(string nombre){
 };
 
 //Reporte diario
-void Administrador::Reportediario(string dia,string datos){
+void Administrador::Reportediario(string dia,string datos){     //datos=Id+sala+costo
     ofstream salida("C:/Users/WIN10 PRO/Documents/Parcial1/Reporte.txt",std::fstream::app); //Lo abre como salid ay agrega al final.
-    salida<<"Reporte: "<<"dia: "<<dia<<"->"<<datos<<endl;
+    salida<<"Reporte: "<<"dia: "<<dia<<"->"<<datos<<endl;       //Añade el estreno al final
     salida.close();
 };
 void Administrador::MostrarReporte(){
@@ -291,7 +297,7 @@ void Administrador::MostrarReporte(){
         exit(1);
     }
     while(!archivo.eof()){
-        cont+=1;
+        cont+=1;        //Variable para saber s no hay estrenos
         archivo.getline(linea,sizeof (linea)); linea1=linea;
         if(linea1.length()<1 && cont<1){            //En la primera linea.
            cout<< "No hay reportes."<<endl;
@@ -339,7 +345,7 @@ string Administrador::BuscarPelicula(string linea,int romper){
         if(linea[i]=='/'){   //Busca la separación de datos en la base.
             cont+=1;
             if(cont==1){ //Hasta este valor de i esta el usuario.
-                s1=linea.substr(0,cant-1);  //usario.
+                s1=linea.substr(0,cant-1);
                 pos=i+1;        //incremeta la posicion 1 unidad para empezar la clave.
                 cant=0;
             }if(cont==2){

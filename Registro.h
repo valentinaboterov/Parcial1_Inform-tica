@@ -7,12 +7,10 @@ using namespace std;
 class Registro{
 public:
     string nombreusuario;
-    bool Administrador(string clave);
+    bool Administrador(string clave);       //Validacion clave administrador
     int  MenuAdmin();
-    bool Usuario(string id,string clave);
-    void RegistroUsuario(string id,string nombre,string clave);
-private:
-    void RegistroUsuario();
-    string Buscar(string linea,int romper); //Recibe linea de archivo y busca los separadores de datos..
+    bool Usuario(string id,string clave);       //Iniciar sesion
+    void RegistroUsuario(string id,string nombre,string clave);     //Registro nuevo
+    string Buscar(string linea,int romper)
 };
 #endif // REGISTRO_H

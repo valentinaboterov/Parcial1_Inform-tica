@@ -1,6 +1,6 @@
-4/Mision de rescate/Accion/120 min/1600/67-70/16+
-2/Triple frontera/Accion/125 min/1900/70-70/16+
-3/Destino final/Terror/120 min/1600/70-70/18+
+4/Ralph/Infantil/102 min/1300/70-70/8+
+2/You/Accion/102 min/1400/70-70/16+
+3/Destino final/Terror/120 min/1600/68-70/18+
 1/A mi altura/Infantil/102 min/1300/70-70/9+
 5/Ricardo Quevedo:Hay gente asi/Comedia/58 min/1500/70-70/16+
 
